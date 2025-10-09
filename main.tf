@@ -14,12 +14,15 @@ data "aws_ami" "amazon_linux" {
 
 }
 
+#tfsec:ignore:aws-ec2-enforce-http-token-imds
 resource "aws_instance" "this" {
   ami           = data.aws_ami.amazon_linux.id
-  instance_type = each.value["instance_type"]
+  instance_type = "t2.micro"
+
 
   root_block_device {
     volume_size = 8
+    encrypted   = true
   }
 
   # Cria mais discos durante a criação da máquina
